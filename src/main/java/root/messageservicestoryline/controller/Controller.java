@@ -1,8 +1,6 @@
 package root.messageservicestoryline.controller;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +36,6 @@ public class Controller {
     private Integer messageWhatsappSenderPort;
 
 
-
-
     @PostMapping("/api/email/send")
     public ResponseEntity<String> sendEmail(@Valid @RequestBody EmailDTO emailDTO) {
         try {
@@ -48,7 +44,7 @@ public class Controller {
             return ResponseEntity.ok("Email sent successfully");
         }
         catch (Exception e) {
-            logger.error("Failed to sent email "+emailDTO+" .Reason:"+e.getMessage());
+            logger.error("Failed to sent email " + emailDTO + " .Reason:" + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send email:" + emailDTO + " " + e.getMessage());
         }
     }
@@ -81,8 +77,8 @@ public class Controller {
             logger.error("HttpException error during communication with MessageSenderWhatsapp:" + e.getMessage(), e);
             return ResponseEntity.status(e.getStatusCode()).body("HttpException.Failed to send message.Reason:" + e.getMessage());
         }
-        catch (ResourceAccessException e){
-            logger.error("messageService cannot connect to MessageSenderWhatsapp.Check MessageSender available or not:" + e.getMessage(), e);
+        catch (ResourceAccessException e) {
+            logger.error("messageService cannot connect to MessageSenderWhatsapp.Check MessageSenderWhatsapp available or not:" + e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("MessageService cannot connect to MessageSenderWhatsapp.Failed to send email:" + whatsappMessageDTO + " " + e.getMessage());
         }
         catch (Exception e) {
