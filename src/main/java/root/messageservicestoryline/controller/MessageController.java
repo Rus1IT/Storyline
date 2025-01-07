@@ -18,7 +18,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import root.messageservicestoryline.dto.EmailDTO;
 import root.messageservicestoryline.dto.WhatsappMessageDTO;
-import root.messageservicestoryline.email.EmailService;
+import root.messageservicestoryline.service.EmailService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,14 +26,18 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-public class Controller {
+public class MessageController {
 
-    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
     private final EmailService emailService;
 
-    @Value("${messageWhatsappSenderPort.port}")
+    @Value("${message-sender-whatsapp.port}")
     private Integer messageWhatsappSenderPort;
+
+    @Value("${message-sender-whatsapp.link}")
+    private String messageWhatsappSenderLink;
+
 
 
     @PostMapping("/api/email/send")
@@ -53,7 +57,7 @@ public class Controller {
     public ResponseEntity<String> sendWhatsappMessage(@Valid @RequestBody WhatsappMessageDTO whatsappMessageDTO) {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            String url = "http://localhost:" + messageWhatsappSenderPort + "/api/v1/sendMessageNow";
+            String url = messageWhatsappSenderLink + messageWhatsappSenderPort + "/api/v1/sendMessageNow";
             logger.info("Sending request to url:" + url);
 
             Map<String, String> requestBody = new HashMap<>();

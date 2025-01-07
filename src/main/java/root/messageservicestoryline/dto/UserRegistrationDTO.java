@@ -1,31 +1,35 @@
 package root.messageservicestoryline.dto;
 
+import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 
 public record UserRegistrationDTO(
-        @NotBlank(message = "Username is required")
+
+        @NotBlank(message = "username is required")
         String username,
 
-        @NotBlank(message = "Name is required")
+        @NotBlank(message = "name is required")
         String name,
 
-        @NotNull(message = "Age is required")
-        @Min(value = 1,message = "Age must be grater than 1")
-        @Max(value = 120,message = "Age must be less than 120")
+        @Nonnull
+        @Min(value = 1,message = "Age cannot be less than 1")
+        @Max(value = 120,message = "Age cannot be more than 120")
         Integer age,
 
-        @Nullable
-        @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Invalid phone number")
-        String phone_number,
+        @NotBlank(message = "password is required")
+        String password,
 
-        @Nullable
-        @Email(message = "Invalid email address")
-        String email,
+        @NotBlank(message = "registration is required (email,phone_number,github or google account)")
+        @Nonnull
+        String registration_account,
 
-        @Nullable
-        String google_account,
+        @NotBlank(message = "registration_type is required (email,phone_number,google,github")
+        @Nonnull
+        String registration_type,
 
-        @Nullable
-        String github_account) {
+        @NotBlank(message = "role is required (ADMIN,USER")
+        @Nonnull
+        String role
+) {
 }
